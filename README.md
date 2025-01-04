@@ -12,15 +12,13 @@ with [FrankenPHP](https://frankenphp.dev) and [Caddy](https://caddyserver.com/) 
 
 ## Features
 
-* Production, development and CI ready
-* Just 1 service by default
 * Blazing-fast performance thanks to [the worker mode of FrankenPHP](https://github.com/dunglas/frankenphp/blob/main/docs/worker.md) (automatically enabled in prod mode)
-* Automatic HTTPS (in dev and prod)
-* HTTP/3 and [Early Hints](https://symfony.com/blog/new-in-symfony-6-3-early-hints) support
-* ApiPlatform, Doctrine, Fixtures, AMQP Messenger bundles
+* PostGreSQL
+* RabbitMQ
+* ApiPlatform, Doctrine, Fixtures, AMQP Messenger bundles in symfony
 
 **Enjoy!**
 
 ## License
 
-Symfony Docker is available under the MIT License.
+Symfony Docker FrankenPHP is available under the MIT License.

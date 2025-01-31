@@ -5,10 +5,26 @@ with [FrankenPHP](https://frankenphp.dev) and [Caddy](https://caddyserver.com/) 
 
 ## Getting Started
 
-1. Run `docker compose build --no-cache` to build fresh images
-2. Run `docker compose up --pull always -d --wait` to set up and start a fresh Symfony project
+1. Run `make build` to build fresh images
+2. Run `make start` to set up and start a fresh Symfony project
 3. Open `https://localhost` in your favorite web browser
-4. Run `docker compose down --remove-orphans` to stop the Docker containers.
+4. Run `make stop` to stop the Docker containers.
+
+# TLS Certificates
+
+## Trusting the Authority
+
+With a standard installation, the authority used to sign certificates generated in the Caddy container is not trusted by your local machine.
+You must add the authority to the trust store of the host :
+
+```
+# Mac
+$ docker cp $(docker compose ps -q php):/data/caddy/pki/authorities/local/root.crt /tmp/root.crt && sudo security add-trusted-cert -d -r trustRoot -k /Library/Keychains/System.keychain /tmp/root.crt
+# Linux
+$ docker cp $(docker compose ps -q php):/data/caddy/pki/authorities/local/root.crt /usr/local/share/ca-certificates/root.crt && sudo update-ca-certificates
+# Windows
+$ docker compose cp php:/data/caddy/pki/authorities/local/root.crt %TEMP%/root.crt && certutil -addstore -f "ROOT" %TEMP%/root.crt
+```
 
 ## Features
 

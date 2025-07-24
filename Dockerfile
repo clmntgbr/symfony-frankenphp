@@ -24,6 +24,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 	git \
 	nodejs \
 	npm \
+	ffmpeg \
+	protobuf-compiler \
 	&& rm -rf /var/lib/apt/lists/*
 
 RUN set -eux; \
@@ -33,11 +35,12 @@ RUN set -eux; \
 		intl \
 		opcache \
 		zip \
-    pdo \
+		pdo \
 		pdo_mysql \
-    pdo_pgsql \
+		pdo_pgsql \
+		protobuf \
 		gd \
-    sockets \
+		sockets \
 		amqp \
 	;
 

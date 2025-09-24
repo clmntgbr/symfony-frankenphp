@@ -7,8 +7,10 @@ with [FrankenPHP](https://frankenphp.dev) and [Caddy](https://caddyserver.com/) 
 
 1. Run `make build` to build fresh images
 2. Run `make start` to set up and start a fresh Symfony project
-3. Open `https://localhost` in your favorite web browser
-4. Run `make stop` to stop the Docker containers.
+3. Run `make jwt` for JWT tokens
+4. Run `make db` to init database and fixtures
+5. Open `https://localhost` in your favorite web browser
+6. Run `make stop` to stop the Docker containers.
 
 # TLS Certificates
 

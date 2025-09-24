@@ -3,11 +3,6 @@
 # Versions
 FROM dunglas/frankenphp:1-php8.3 AS frankenphp_upstream
 
-# The different stages of this Dockerfile are meant to be built into separate images
-# https://docs.docker.com/develop/develop-images/multistage-build/#stop-at-a-specific-build-stage
-# https://docs.docker.com/compose/compose-file/#target
-
-
 # Base FrankenPHP image
 FROM frankenphp_upstream AS frankenphp_base
 
@@ -44,16 +39,9 @@ RUN set -eux; \
 		amqp \
 	;
 
-# https://getcomposer.org/doc/03-cli.md#composer-allow-superuser
 ENV COMPOSER_ALLOW_SUPERUSER=1
 
 ENV PHP_INI_SCAN_DIR=":$PHP_INI_DIR/app.conf.d"
-
-###> recipes ###
-###> doctrine/doctrine-bundle ###
-RUN install-php-extensions pdo_pgsql
-###< doctrine/doctrine-bundle ###
-###< recipes ###
 
 COPY --link frankenphp/conf.d/10-app.ini $PHP_INI_DIR/app.conf.d/
 COPY --link --chmod=755 frankenphp/docker-entrypoint.sh /usr/local/bin/docker-entrypoint

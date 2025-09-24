@@ -3,8 +3,13 @@ services:
         container_name: ${PROJECT_NAME}-php
         image: ${IMAGES_PREFIX:-}app-php
         restart: unless-stopped
+        env_file:
+            - .env
+        build:
+            context: .
+            target: frankenphp_dev
         networks:
-            - api_network
+            - substream-network
         depends_on:
             - database
             - rabbitmq
@@ -33,7 +38,7 @@ services:
         image: postgres:latest
         container_name: ${PROJECT_NAME}-db
         networks:
-            - api_network
+            - substream-network
         env_file:
             - .env
         volumes:
@@ -48,7 +53,7 @@ services:
         image: rabbitmq:3-management
         hostname: rabbitmq
         networks:
-            - api_network
+            - substream-network
         environment:
             RABBITMQ_DEFAULT_USER: ${RABBITMQ_USER}
             RABBITMQ_DEFAULT_PASS: ${RABBITMQ_PASS}
@@ -61,23 +66,9 @@ services:
         ports:
             - "9002:5672"
             - "9003:15672"
-
-    qa:
-        container_name: ${PROJECT_NAME}-qa
-        image: php:8.3-cli-alpine
-        volumes:
-            - ./src:/app/src
-        working_dir: /app
-        tty: true
-        command: >
-            sh -c "apk add --no-cache wget composer &&
-            wget https://cs.symfony.com/download/php-cs-fixer-v3.phar -O php-cs-fixer &&
-            chmod a+x php-cs-fixer &&
-            composer require --dev phpstan/phpstan &&
-            tail -f /dev/null"
     
     minio:
-        container_name: ${PROJECT_NAME}-s3
+        container_name: ${PROJECT_NAME}-minio
         image: minio/minio:latest
         env_file:
             - .env
@@ -85,7 +76,7 @@ services:
             - '9004:9000'
             - '9005:9001'
         networks:
-            - api_network
+            - substream-network
         volumes:
             - minio_data:/data/minio
         command: 'minio server /data/minio --console-address ":9001"'
@@ -94,29 +85,36 @@ services:
             MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD}
             MINIO_BROWSER: "on"
    
-    minio-init:
-        container_name: ${PROJECT_NAME}-minio
+    minio-setup:
+        container_name: ${PROJECT_NAME}-minio-setup
         image: minio/mc:latest
         depends_on:
             - minio
         env_file:
             - .env
+        volumes:
+            - ./scripts:/scripts
         entrypoint: >
             /bin/sh -c "
+            chmod +x /scripts/setup-minio.sh;
             sleep 10;
-            mc alias set myminio http://minio:9000 ${MINIO_ROOT_USER} ${MINIO_ROOT_PASSWORD};
-            mc admin user add myminio ${S3_USER} ${S3_PASSWORD};
-            mc admin policy attach myminio readwrite --user ${S3_USER};
-            mc admin accesskey create myminio ${S3_USER};
-            exit 0;
+            /scripts/setup-minio.sh;
             "
         networks:
-            - api_network
+            - substream-network
+
+    maildev:
+        container_name: ${PROJECT_NAME}-maildev
+        image: maildev/maildev
+        ports:
+            - "9006:1080"
+            - "9007:1025"
+        networks:
+            - substream-network
 
 networks:
-  api_network:
-    name: api_network
-    driver: bridge
+  substream-network:
+    external: true
 
 volumes:
     caddy_data:
@@ -124,3 +122,4 @@ volumes:
     database_data:
     rabbitmq_data:
     minio_data:
+    minio_setup_data:

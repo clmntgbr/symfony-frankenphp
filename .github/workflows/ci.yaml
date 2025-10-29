@@ -89,9 +89,8 @@ jobs:
         uses: super-linter/super-linter@v8
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          VALIDATE_CHECKOV: false
-          VALIDATE_TRIVY: false
-          VALIDATE_COMPOSER: false
+          DEFAULT_BRANCH: main
+          VALIDATE_ALL_CODEBASE: false
           VALIDATE_PHP_BUILTIN: true
           VALIDATE_DOCKERFILE_HADOLINT: true
           VALIDATE_YAML: true

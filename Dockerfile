@@ -35,6 +35,7 @@ RUN set -eux; \
 		gd \
 		sockets \
 		amqp \
+		xml \
 	;
 
 # https://getcomposer.org/doc/03-cli.md#composer-allow-superuser

@@ -1,5 +1,3 @@
----
-# Production environment override
 services:
   php:
     container_name: ${PROJECT_NAME}-php

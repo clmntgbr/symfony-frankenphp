@@ -2,6 +2,9 @@
 # Development environment override
 services:
   php:
+    container_name: ${PROJECT_NAME}-php
+    env_file:
+        - .env
     build:
       context: .
       target: frankenphp_dev
@@ -22,5 +25,9 @@ services:
       # Ensure that host.docker.internal is correctly defined on Linux
       - host.docker.internal:host-gateway
     tty: true
+
 ###> symfony/mercure-bundle ###
+  mercure:
+    ports:
+      - "80"
 ###< symfony/mercure-bundle ###

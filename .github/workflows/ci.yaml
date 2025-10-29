@@ -73,31 +73,9 @@ jobs:
         with:
           fetch-depth: 0
           persist-credentials: false
-      - name: Setup PHP
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: '8.4'
-          extensions: xml, sockets, gd, amqp, zip, pdo, sodium, intl, ctype, iconv
-          tools: composer
-      - name: Install Composer dependencies
-        run: composer install --no-interaction --prefer-dist --optimize-autoloader
       - name: Lint Code Base
-        uses: super-linter/super-linter@v8
+        uses: super-linter/super-linter/slim@v8
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          DEFAULT_BRANCH: main
-          VALIDATE_PHP_BUILTIN: true
-          VALIDATE_DOCKERFILE_HADOLINT: true
-          VALIDATE_YAML: true
-          VALIDATE_JSON: true
-          VALIDATE_MARKDOWN: true
-          VALIDATE_EDITORCONFIG: true
-          VALIDATE_GIT_IGNORE: true
-          VALIDATE_GIT_ATTRIBUTES: true
-          VALIDATE_GIT_COMMITLINT: false
           VALIDATE_CHECKOV: false
           VALIDATE_TRIVY: false
-          VALIDATE_PHP_PHPCS: false
-          VALIDATE_PHP_PHPSTAN: false
-          VALIDATE_PHP_PSALM: false
-          VALIDATE_COMPOSER: false

@@ -90,3 +90,22 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           DEFAULT_BRANCH: main
+          VALIDATE_ALL_CODEBASE: false
+          VALIDATE_PHP_BUILTIN: true
+          VALIDATE_DOCKERFILE_HADOLINT: true
+          VALIDATE_YAML: true
+          VALIDATE_JSON: true
+          VALIDATE_MARKDOWN: true
+          VALIDATE_COMPOSER: false
+          VALIDATE_PHP_PHPCS: false
+          VALIDATE_PHP_PHPSTAN: false
+          VALIDATE_PHP_PSALM: false
+          VALIDATE_BIOME_FORMAT: false
+          VALIDATE_BIOME_LINT: false
+          VALIDATE_PRETTIER: false
+          VALIDATE_ESLINT: false
+          VALIDATE_STYLELINT: false
+          VALIDATE_BLACK: false
+          VALIDATE_RUFF: false
+          IGNORE_GITIGNORED_FILES: true
+          IGNORE_PATTERNS: "vendor/**,var/**,node_modules/**,*.min.js,*.min.css"

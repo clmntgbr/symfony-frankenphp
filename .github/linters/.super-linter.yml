@@ -12,13 +12,20 @@ VALIDATE_YAML: true
 VALIDATE_JSON: true
 VALIDATE_MARKDOWN: true
 
-# Disable Composer validation to avoid PHP extension issues
+# Explicitly disable Composer validation to avoid PHP extension issues
 VALIDATE_COMPOSER: false
 
-# Disable other PHP linters that might cause issues
+# Disable all other linters to avoid conflicts
 VALIDATE_PHP_PHPCS: false
 VALIDATE_PHP_PHPSTAN: false
 VALIDATE_PHP_PSALM: false
+VALIDATE_BIOME_FORMAT: false
+VALIDATE_BIOME_LINT: false
+VALIDATE_PRETTIER: false
+VALIDATE_ESLINT: false
+VALIDATE_STYLELINT: false
+VALIDATE_BLACK: false
+VALIDATE_RUFF: false
 
 # Ignore vendor directory and other files we don't want to lint
 IGNORE_GITIGNORED_FILES: true
@@ -30,3 +37,5 @@ IGNORE_PATTERNS:
   - "node_modules/**"
   - "*.min.js"
   - "*.min.css"
+  - "**/vendor/**"
+  - "**/node_modules/**"

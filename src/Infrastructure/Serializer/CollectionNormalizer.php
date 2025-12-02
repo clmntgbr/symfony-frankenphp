@@ -17,13 +17,22 @@ final class CollectionNormalizer implements NormalizerInterface, NormalizerAware
 
     private const ALREADY_CALLED = 'COLLECTION_NORMALIZER_ALREADY_CALLED';
 
+    /**
+     * @param array<string, mixed> $context
+     *
+     * @return array<string, mixed>
+     */
     public function normalize(mixed $object, ?string $format = null, array $context = []): array
     {
         $context[self::ALREADY_CALLED] = true;
 
         $data = $this->normalizer->normalize($object, $format, $context);
 
-        if ($object instanceof PaginatorInterface && is_array($data)) {
+        if (! is_array($data)) {
+            return [];
+        }
+
+        if ($object instanceof PaginatorInterface) {
             $currentPage = $object->getCurrentPage();
             $itemsPerPage = $object->getItemsPerPage();
             $totalItems = $object->getTotalItems();
@@ -40,6 +49,9 @@ final class CollectionNormalizer implements NormalizerInterface, NormalizerAware
         return $data;
     }
 
+    /**
+     * @param array<string, mixed> $context
+     */
     public function supportsNormalization(mixed $data, ?string $format = null, array $context = []): bool
     {
         if (isset($context[self::ALREADY_CALLED])) {

@@ -1,10 +1,4 @@
 parameters:
-    stripe.plan.price_starter_monthly: '%env(PRICE_STARTER_MONTHLY)%'
-    stripe.plan.price_starter_yearly: '%env(PRICE_STARTER_YEARLY)%'
-    stripe.plan.price_pro_monthly: '%env(PRICE_PRO_MONTHLY)%'
-    stripe.plan.price_pro_yearly: '%env(PRICE_PRO_YEARLY)%'
-    stripe.plan.price_business_monthly: '%env(PRICE_BUSINESS_MONTHLY)%'
-    stripe.plan.price_business_yearly: '%env(PRICE_BUSINESS_YEARLY)%'
 
 services:
     _defaults:
@@ -16,7 +10,6 @@ services:
             string $env: '%env(APP_ENV)%'
             string $frontendUrl: '%env(FRONTEND_URL)%'
             string $uploadDirectory: '%kernel.project_dir%/public/uploads/'
-            string $stripeApiSecretKey: '%env(STRIPE_API_SECRET_KEY)%'
 
     App\:
         resource: '../src/'

@@ -1,10 +1,11 @@
+---
 services:
   php:
     container_name: ${PROJECT_NAME}-php
     image: ${IMAGES_PREFIX:-}app-php
     restart: unless-stopped
     networks:
-      - frankenphp-network
+      - substream-network
     env_file:
       - .env
       - .env.local
@@ -32,10 +33,10 @@ services:
         protocol: udp
 
   database:
-    image: postgres:latest
+    image: postgres:18
     container_name: ${PROJECT_NAME}-db
     networks:
-      - frankenphp-network
+      - substream-network
     env_file:
       - .env
       - .env.local
@@ -44,7 +45,7 @@ services:
       POSTGRES_USER: ${POSTGRES_USER:-postgres}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
     volumes:
-      - database_data:/var/lib/postgresql/data
+      - database_data:/var/lib/postgresql
     ports:
       - "9001:5432"
     restart: unless-stopped
@@ -58,7 +59,7 @@ services:
   mercure:
     container_name: ${PROJECT_NAME}-mercure
     networks:
-      - frankenphp-network
+      - substream-network
     env_file:
       - .env
       - .env.local
@@ -88,7 +89,7 @@ services:
   rabbitmq:
     container_name: ${PROJECT_NAME}-rabbitmq
     networks:
-      - frankenphp-network
+      - substream-network
     env_file:
       - .env
       - .env.local
@@ -113,7 +114,7 @@ services:
       timeout: 10s
       retries: 5
       start_period: 30s
-
+  
 volumes:
   caddy_data:
   caddy_config:
@@ -123,5 +124,5 @@ volumes:
   rabbitmq_data:
 
 networks:
-  frankenphp-network:
+  substream-network:
     external: true
